@@ -118,6 +118,11 @@ def extract_hostnames(routers: List[Router]) -> List[Hostname]:
         for match in re.finditer(hostname_regex, router["rule"]):
             hostnames.append(Hostname(hostname=match.group(1), router=router))
 
+    # Only keep hostnames which end with the DNS domain
+    hostnames = [
+        hostname for hostname in hostnames if hostname["hostname"].endswith(DNS_DOMAIN)
+    ]
+
     return hostnames
 
 
