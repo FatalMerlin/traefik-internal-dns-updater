@@ -1,0 +1,23 @@
+services:
+  internal-dns-updater:
+    build: .
+    restart: unless-stopped
+    environment:
+      DB_PATH: dns.db
+      TRAEFIK_HOST: traefik
+      TRAEFIK_PORT: 8080
+      TRAEFIK_ENTRYPOINTS: "web,websecure"
+      DNS_SERVER: 192.168.178.1
+      DNS_DOMAIN: fritz.box
+      TARGET_IP: 192.168.178.2
+      LOG_LEVEL: INFO
+      UPDATE_INTERVAL: 10
+    volumes:
+      - ./data/dns.db:/app/dns.db
+    networks:
+      traefik:
+
+networks:
+  traefik:
+    name: traefik
+    external: true
